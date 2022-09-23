@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Only used for private space -->
+    <external-files-path name="images_big_ext" path="PokemonTager" />
+    <external-files-path name="images_big_ext2" path="/storage/3861-3361/Android/data/net.homeip.cave_man.pokemontagger/files/PokemonTager" />
+    <external-files-path name="external_files" path="." />
+
+    <files-path name="images_big2_ext" path="PokemonTager" />
+    <files-path name="images_big2_ext2" path="/storage/3861-3361/Android/data/net.homeip.cave_man.pokemontagger/files/PokemonTager" />
+    <files-path name="external_files2" path="." />
+    <root-path name="external_files" path="/storage/3861-3361/" />
+
+    <external-path name="images_big" path="DCIM/PokemonTager" />
+
+</paths>

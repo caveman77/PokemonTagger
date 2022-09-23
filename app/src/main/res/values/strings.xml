@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pokemon Tagger</string>
+
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This app needs camera and storage permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This app detect pokemon card and show to the user the french release.
+
+        ]]>
+    </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="storebuttontext">Sauve</string>
+    <string name="translatebuttontext">Traduit</string>
+    <string name="translateandsavebuttontext">Sauve et traduit</string>
+    <string name="exportDb">Export DB</string>
+    <string name="ExportDone">Export Effectue</string>
+    <string name="ExportFailed">Export en erreur</string>
+    <string name="PermissionReceived">Permission camera recue</string>
+    <string name="PermissionDenied">Permission camera refusee</string>
+    <string name="Saved">Sauvegarde effectuee</string>
+    <string name="SelectFamilyNeeded">Selectionner la localisation de la famille</string>
+    <string name="SelectCardNNeeded">Selectionner la localisation du numero de la carte</string>
+    <string name="UnknownError">Erreur inconnue</string>
+    <string name="CardNumberEmpty">Entrer un numero de carte</string>
+    <string name="CardNumberInvalid">Numero de carte non valide</string>
+</resources>

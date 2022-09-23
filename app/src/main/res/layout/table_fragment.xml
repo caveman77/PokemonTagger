@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="center"
+	>
+
+	<RadioGroup
+		android:id="@+id/radio_group"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		 >
+
+		<RadioButton
+			android:id="@+id/radio_logo"
+			android:layout_weight="1"
+			android:scaleX="0.7"
+			android:scaleY="0.7"
+			android:layout_height="fill_parent"
+			android:layout_width="wrap_content"
+			android:checked="true"
+			android:text="Family" >
+		</RadioButton>
+
+		<Spinner
+			android:id="@+id/spinner_pokemonfamily"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:spinnerMode="dropdown"
+			></Spinner>
+		<RadioButton
+			android:id="@+id/radio_number"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="fill_parent"
+			android:scaleX="0.7"
+			android:scaleY="0.7"
+			android:text="Card" />
+		<EditText
+			android:id="@+id/CardNumber"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:minWidth="6dp"
+			android:layout_weight="1"
+			android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+			android:inputType="textCapSentences"
+			>
+
+		</EditText>
+		<Button
+			android:id="@+id/save_button"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:text="Save"
+			android:minHeight="0dp"
+			android:minWidth="0dp"
+			/>
+	</RadioGroup>
+
+
+
+
+
+	<ScrollView
+
+android:id="@+id/mainscrolView"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+	>
+
+
+<HorizontalScrollView
+	android:id="@+id/rclv"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	>
+
+
+	<!--
+    android:stretchColumns="*"
+    -->
+
+	<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/table"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+
+>
+
+	</TableLayout>
+</HorizontalScrollView>
+</ScrollView>
+
+</LinearLayout>

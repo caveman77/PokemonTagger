@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="#50FFFFFF"
+>
+
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:gravity="center"
+                  android:layout_marginBottom="4dp"
+                  android:layout_weight="1">
+
+        <ImageView
+                android:id="@+id/iv_1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_height="match_parent"
+                android:src="@drawable/aor2"
+                android:layout_marginEnd="4dp"
+        />
+
+        <ImageView android:layout_width="0dp"
+                   android:id="@+id/iv_2"
+                   android:layout_weight="1"
+                   android:layout_height="match_parent"
+                   android:scaleType="centerCrop"
+                   android:layout_marginStart="4dp"
+                   android:src="@drawable/aor1"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_marginBottom="4dp"
+                  android:layout_marginTop="4dp"
+                  android:layout_height="0dp"
+                  android:gravity="center"
+                  android:layout_weight="1">
+
+        <ImageView android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:scaleType="centerCrop"
+                   android:id="@+id/iv_3"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/bcr10"
+                   android:layout_marginEnd="4dp"
+        />
+
+        <ImageView android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="match_parent"
+                   android:id="@+id/iv_4"
+                   android:scaleType="centerCrop"
+                   android:layout_marginStart="4dp"
+                   android:src="@drawable/bcr11"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_marginTop="4dp"
+                  android:gravity="center"
+                  android:layout_weight="1">
+
+        <ImageView android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:id="@+id/iv_5"
+                   android:scaleType="centerCrop"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/brs151"
+                   android:layout_marginEnd="4dp"
+        />
+
+        <ImageView android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:id="@+id/iv_6"
+                   android:layout_height="match_parent"
+                   android:scaleType="centerCrop"
+                   android:layout_marginStart="4dp"
+                   android:src="@drawable/brs152"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_7"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:src="@drawable/swsh3_photo_20220829_141428_625"
+            android:layout_marginEnd="4dp"
+            />
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_8"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/swsh3_photo_20220829_141428_599"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_9"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:src="@drawable/swsh3_4"
+            android:layout_marginEnd="4dp"
+            />
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_10"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/swsh3_3"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_11"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:src="@drawable/brs_photo_20220831_182715_625"
+            android:layout_marginEnd="4dp"
+            />
+
+        <ImageView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/iv_12"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/photo_20220901_094744_625"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

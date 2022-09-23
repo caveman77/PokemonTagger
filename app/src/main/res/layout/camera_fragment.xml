@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textTranslate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/translatebuttontext"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_12sdp"
+        android:textSize="@dimen/_18sdp"
+        android:textAlignment="center"
+        android:background="@color/gray"
+
+        />
+
+    <TextView
+        android:id="@+id/textStore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/storebuttontext"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_12sdp"
+        android:textSize="@dimen/_18sdp"
+        android:textAlignment="center"
+        android:background="@color/gray"
+        android:layout_below="@id/textTranslate"
+      />
+
+    <TextView
+        android:id="@+id/textTranslateAndStore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/translateandsavebuttontext"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_12sdp"
+        android:textSize="@dimen/_18sdp"
+        android:textAlignment="center"
+        android:background="@color/gray"
+        android:layout_below="@id/textStore"
+        />
+
+
+    <TextView
+        android:id="@+id/textExportDB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exportDb"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_12sdp"
+        android:textSize="@dimen/_18sdp"
+        android:textAlignment="center"
+        android:background="@color/gray"
+        android:layout_below="@id/textTranslateAndStore"
+        >
+    </TextView>
+
+
+
+</RelativeLayout>
