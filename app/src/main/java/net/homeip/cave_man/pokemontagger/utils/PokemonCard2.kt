@@ -58,7 +58,7 @@ class PokemonCard
     //private ArrayList<Float[]> ProbFamilies = null;     // Probabilities predicted for each family  per chunck
     //private var ProbFamilies: ArrayList<List<Classifier.Recognition>> // Probabilities predicted for each family  per chunck
 
-    private val mModelPath = "v46_model.tflite"           // was "converted_model.tflite"
+    private val mModelPath = "v49_model.tflite"           // was "converted_model.tflite"
     private val mLabelPath = "label _pokemon.txt"
     private lateinit var classifier: Classifier
 
@@ -185,7 +185,7 @@ class PokemonCard
 
     private fun initClassifier(assetManager: AssetManager)
     {
-        classifier = Classifier(assetManager, mModelPath, mLabelPath, SIZE_CHUNCK)
+        classifier = Classifier(assetManager, mModelPath, mLabelPath, 224)
     }
 
     fun getNumberChuncks(): Int

@@ -17,7 +17,7 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
     private var interpreter: Interpreter
     private var labelList: List<String>
     private val INPUT_SIZE: Int = inputSize
-    private val PIXEL_SIZE: Int = 1 // was 3
+    private val PIXEL_SIZE: Int = 3 // was 1
     //private val IMAGE_MEAN = 0
     //private val IMAGE_STD = 255.0f
     private val MAX_RESULTS = 3
@@ -86,14 +86,21 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
                 val color2 = (input.shr(8) and 0xFF)
                 val color3 = (input and 0xFF)
 
+                // https://github.com/keras-team/keras/blob/e6784e4302c7b8cd116b74a784f4b78d60e83c26/keras/applications/imagenet_utils.py#L177
+                // This does match to  ImageNet dataset centers
+                val mean: FloatArray = floatArrayOf(103.939f, 116.779f, 123.68f)
                 val color2encode : Float
-                color2encode = (((color1.toFloat() + color2.toFloat() + color3.toFloat())*2)/(3*256))-1
+                //color2encode = (((color1.toFloat() + color2.toFloat() + color3.toFloat())*2)/(3*256))-1
+                byteBuffer.putFloat(color1.toFloat()-mean[0])
+                byteBuffer.putFloat(color2.toFloat()-mean[1])
+                byteBuffer.putFloat(color3.toFloat()-mean[2])
+
                 //byteBuffer.putFloat((((input.shr(16)  and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
                 //byteBuffer.putFloat((((input.shr(8) and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
                 //byteBuffer.putFloat((((input and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
 
 
-                byteBuffer.putFloat(color2encode)
+                //byteBuffer.putFloat(color2encode)
             }
         }
         return byteBuffer

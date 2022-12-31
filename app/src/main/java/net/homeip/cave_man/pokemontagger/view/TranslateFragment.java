@@ -348,9 +348,17 @@ public class TranslateFragment extends Fragment {
                 PokemonFamily poke = GetFamilyFromMlIndex(family);
 
 
-                String uri = "@drawable/" + poke.getIcon();
-                int imageResource = getContext().getResources().getIdentifier(uri, null, getContext().getPackageName());
-                family_detected.setImageResource(imageResource);
+                try
+                {
+                    String uri = "@drawable/" + poke.getIcon();
+                    int imageResource = getContext().getResources().getIdentifier(uri, null, getContext().getPackageName());
+                    family_detected.setImageResource(imageResource);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
             }
 
             if (p==card.getNumberChuncks()-1)       // as the text reco has been played already. Let's update the layout accordingly
