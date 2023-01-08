@@ -363,6 +363,8 @@ public class TranslateFragment extends Fragment {
                     String uri = "@drawable/" + poke.getIcon();
                     int imageResource = getContext().getResources().getIdentifier(uri, null, getContext().getPackageName());
                     family_detected.setImageResource(imageResource);
+
+
                 }
                 catch (Exception e)
                 {

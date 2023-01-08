@@ -349,10 +349,20 @@ class PokemonCard
         //val y_number : Int = CardNumberDetectedChunkLocation!! / nb_chuncks_per_line
         val x_number : Int = CardNumberDetectedChunkLocation!! % nb_chuncks_per_line
 
-
-        for (ligne in MAX_RANGE_AROUND_CARD/2 downTo -MAX_RANGE_AROUND_CARD/2 step 1)
+        // The logo is always closer to the edge than the number.
+        // We take the assumption that the user has more or less centered the picture verticaly
+        var x_start = MAX_RANGE_AROUND_CARD
+        var x_stop = 0
+        if (x_number < nb_chuncks_per_line/2)
         {
-            for (colonne in MAX_RANGE_AROUND_CARD downTo -MAX_RANGE_AROUND_CARD step 1)
+            x_start = 0
+            x_stop = -MAX_RANGE_AROUND_CARD
+        }
+
+
+        for (ligne in 1 downTo -1 step 1)
+        {
+            for (colonne in x_start downTo x_stop step 1)
             {
                 val currentchunk : Int = nb_chuncks_per_line * ligne + colonne + CardNumberDetectedChunkLocation!!
 
