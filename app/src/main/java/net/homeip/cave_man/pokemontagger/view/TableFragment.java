@@ -173,6 +173,8 @@ public class TableFragment extends Fragment {
 
                 ImageView family_detected =  (ImageView) viewCell.findViewById(R.id.ml_family);
                 holder.FamilyLogo = family_detected;
+                holder.Photo = img;
+
 
                 img.setTag(holder);
                 card.setChunckStatus(holder);
@@ -237,6 +239,13 @@ public class TableFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        runningTask.cancel(true);
+    }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -261,7 +270,7 @@ public class TableFragment extends Fragment {
             //card.launchML();
 
             // family logo are usually below so better start with the last ones
-            for (int p=card.getNumberChuncks()-1; p>=0; p--)
+            for (int p=card.getNumberChuncks()-1; p>=0  && (!isCancelled()); p--)
             {
                 card.DectectLogoFamily(p);
                 publishProgress(p);

@@ -168,6 +168,7 @@ public class TranslateFragment extends Fragment {
 
                 ImageView family_detected =  (ImageView) viewCell.findViewById(R.id.ml_family);
                 holder.FamilyLogo = family_detected;
+                holder.Photo = img;
 
                 img.setTag(holder);
                 card.setChunckStatus(holder);
@@ -229,6 +230,13 @@ public class TranslateFragment extends Fragment {
         runningTask.execute();
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        runningTask.cancel(true);
     }
 
     public void OpenPokeCardex(PokemonCard card, String CardN)
@@ -298,7 +306,7 @@ public class TranslateFragment extends Fragment {
 
 
             // family logo are usually below so better start with the last ones
-            for (int p=card.getNumberChuncks()-1; p>=0 && ((pastrouve == true) || (Store==true)) ; p--)
+            for (int p=card.getNumberChuncks()-1; p>=0 && ((pastrouve == true) || (Store==true)) && (!isCancelled()); p--)
             {
                 card.DectectLogoFamily(p);
                 publishProgress(p);
@@ -373,6 +381,14 @@ public class TranslateFragment extends Fragment {
                 String numero = card.getCardNumberDetected();
                 if (numero != null)
                 {
+                    Integer chunkNumber = card.getCardNumberChunk();
+                    if (chunkNumber != null)
+                    {
+                        ChunckStatusKot c2 = card.getChunck(chunkNumber);
+                        View v = c2.Photo;
+                        v.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+                    }
+
                     editView.setText(numero);
                 }
             }

@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.Rect
 import android.media.ExifInterface
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.constraintlayout.solver.widgets.Rectangle
 import androidx.core.content.FileProvider
 import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.android.gms.tasks.Tasks
@@ -34,6 +36,7 @@ class PokemonCard
 {
     //private var totalCardFamilyDetected : Int  = -1
     private var CardNumberDetected: String? = null       // can have letters in them for promo family
+    private var CardNumberDetectedChunkLocation: Int? = null   // Chunk number of the number as detected
     private var totalCardFamilyDetectedString : String? = null
 
     private var family: PokemonFamily? = null
@@ -54,6 +57,7 @@ class PokemonCard
     //private var tflite: Interpreter? = null
     //private var tfilemodel: ByteBuffer? = null
     private var imageChuncks: ArrayList<Bitmap>? = null // Image for each chunck
+    private var rotatedBitmap: Bitmap? = null           // Intermediary image (400x400)
 
     //private ArrayList<Float[]> ProbFamilies = null;     // Probabilities predicted for each family  per chunck
     //private var ProbFamilies: ArrayList<List<Classifier.Recognition>> // Probabilities predicted for each family  per chunck
@@ -207,7 +211,7 @@ class PokemonCard
         totalCardFamilyDetectedString = null
 
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        val image = InputImage.fromBitmap(originalPictureBitmap, 0)
+        val image = InputImage.fromBitmap(rotatedBitmap!!, 0)
 
         val result = recognizer.process(image)
             .addOnSuccessListener { _ ->
@@ -280,8 +284,34 @@ class PokemonCard
 
                             }
 
+                            // Calculate card number location
+                            val separator = elementText.indexOf("/",0,false )
+                            var ratio: Float
+                            if (separator != null)
+                            {
+                                ratio = separator /  (elementText.length.toFloat() * 2)
+                            }
+                            else
+                            {
+                                ratio = 0.5f
+                            }
 
-                            Log.v(TAG, "DectectCardNumber - Found card:"+CardNumberDetected.toString()+"/"+totalCardFamilyDetectedString)
+                            val cardloc = element.boundingBox
+                            val originalCenterCardNumberX = cardloc!!.left + (cardloc!!.right - cardloc!!.left) * ratio
+                            val originalCenterCardNumberY = (cardloc!!.top + cardloc!!.bottom ) / 2
+                            //val originalCenterCardNumberRatioX = originalCenterCardNumberX.toFloat() / originalPictureBitmap.width
+                            //val originalCenterCardNumberRatioY = originalCenterCardNumberY.toFloat() / originalPictureBitmap.height
+
+                            val InterCardNumberX: Int = (originalCenterCardNumberX).toInt()
+                            val InterCardNumberY: Int = (originalCenterCardNumberY).toInt()
+
+                            CardNumberDetectedChunkLocation = getPositionfromXY(InterCardNumberX, InterCardNumberY, getNumberChuncks())
+
+                            Log.v(TAG, "DectectCardNumber - Found card:"+CardNumberDetected.toString()+"/"+totalCardFamilyDetectedString + " location:"+ cardloc.toString() + ", CarNumber loc 400: ("+ InterCardNumberX + ","+ InterCardNumberY + ") NumberChunk:" + CardNumberDetectedChunkLocation )
+
+
+                            chunkstatusTable!![CardNumberDetectedChunkLocation!!]!!.isCardN = true
+
                         }
                     }
                 }
@@ -295,6 +325,12 @@ class PokemonCard
         }
 
         Log.i(TAG, "DectectCardNumber - Fully Completed :" + Date())
+
+    }
+
+    fun getCardNumberChunk() : Int?
+    {
+        return CardNumberDetectedChunkLocation;
 
     }
 
@@ -526,6 +562,20 @@ class PokemonCard
         return longArrayOf(tl_x, tl_y, br_x, br_y)
     }
 
+    // return the Chunck number closer to X Y position
+    // X and Y are based on intermediary image (400x400)
+    // nb_chuncks: The total number of chuncks
+    fun getPositionfromXY(X: Int, Y: Int, nb_chuncks: Int): Int
+    {
+        val nb_chuncks_per_line: Int = Math.sqrt(nb_chuncks.toDouble()).toInt()
+
+        var nb_ligne : Int = (Y*2) / SIZE_CHUNCK
+        var nb_col : Int = (X*2) / SIZE_CHUNCK
+
+        var output : Int = nb_chuncks_per_line * nb_ligne + nb_col
+        return output
+    }
+
     fun setChunckStatus(status: ChunckStatusKot) {
         chunkstatusTable!![status.position] = status
     }
@@ -573,40 +623,25 @@ class PokemonCard
         return db.insert(DataBaseHandler.TABLE_NAME, null, cv)
     }
 
-    // Split orginal image in chuncks
-    fun SplitImage(): ArrayList<Bitmap>?
+    fun CreateIntermediaryImage()
     {
-        Log.i(TAG, "SplitImage - Starting")
+        Log.i(TAG, "CreateIntermediaryImage - Starting")
         val theImage = originalPictureBitmap
         imageChuncks = null
         //if (tfilemodel == null) return null
-        val patch_size = SIZE_CHUNCK
+
         val image_size = INTERMEDIARY_IMAGE_SIZE
 
         //For the number of rows and columns of the grid to be displayed
 
-        //For height and width of the small image chunks
-        val chunkHeight: Int
-        val chunkWidth: Int
 
-        //To store all the small image chunks in bitmap format in this list
-        val chunkperaxis = ((image_size * 2) / patch_size) + 1
-        val chunkNumbers = chunkperaxis * chunkperaxis
-        val chunkedImages = ArrayList<Bitmap>(chunkNumbers)
-
-
-        val chunkstat : ChunckStatusKot = ChunckStatusKot()
-
-
-        //chunkstatusTable = arrayOfNulls(chunkNumbers)
-        chunkstatusTable = Array<ChunckStatusKot?>(chunkNumbers, { _ -> chunkstat })
 
         //----- Getting the scaled bitmap of the source image
         val scaledBitmap = Bitmap.createScaledBitmap(theImage, image_size, image_size, true)
         val softwareBitmap = scaledBitmap.copy(Bitmap.Config.ARGB_8888, false)
         Log.i(TAG, "SplitImage - Rotating based on Exif tag")
         // -- Rotate picture based on exif
-        val rotatedBitmap: Bitmap
+
         try {
             val exif = ExifInterface(OriginalPictureFile!!.absolutePath.toString())
             Exif_rotation = exif.getAttributeInt(
@@ -629,7 +664,7 @@ class PokemonCard
             )
         } catch (ex: IOException) {
             Log.e(TAG, "SplitImage - Failed to get Exif data", ex)
-            return null
+            return
         }
 
         //------- Devide in truncks
@@ -650,7 +685,7 @@ class PokemonCard
                     TAG,
                     "SplitImage - Processing chunck $p"
                 )
-                val currentChunk = Bitmap.createBitmap(rotatedBitmap, xCoord, yCoord, chunkWidth, chunkHeight)
+                val currentChunk = Bitmap.createBitmap(rotatedBitmap!!, xCoord, yCoord, chunkWidth, chunkHeight)
                 chunkedImages.add(currentChunk)
                 //var tolog = false
                 //if (p == 625) tolog = true
