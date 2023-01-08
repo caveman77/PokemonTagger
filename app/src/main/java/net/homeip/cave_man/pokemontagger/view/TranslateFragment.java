@@ -430,6 +430,14 @@ public class TranslateFragment extends Fragment {
                 if (!StringUtils.isEmpty(CardN))
                 {
                     editView.setText(CardN);
+
+                    Integer chunkNumber = card.getCardNumberChunk();
+                    if (chunkNumber != null)
+                    {
+                        ChunckStatusKot c2 = card.getChunck(chunkNumber);
+                        View v = c2.Photo;
+                        v.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+                    }
                 }
             }
 

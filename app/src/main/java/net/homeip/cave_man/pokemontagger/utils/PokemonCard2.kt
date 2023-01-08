@@ -305,7 +305,7 @@ class PokemonCard
                             val InterCardNumberX: Int = (originalCenterCardNumberX).toInt()
                             val InterCardNumberY: Int = (originalCenterCardNumberY).toInt()
 
-                            CardNumberDetectedChunkLocation = getPositionfromXY(InterCardNumberX, InterCardNumberY, getNumberChuncks())
+                            CardNumberDetectedChunkLocation = getPositionfromXY(InterCardNumberX, InterCardNumberY, getNumberChuncks()) - 1
 
                             Log.v(TAG, "DectectCardNumber - Found card:"+CardNumberDetected.toString()+"/"+totalCardFamilyDetectedString + " location:"+ cardloc.toString() + ", CarNumber loc 400: ("+ InterCardNumberX + ","+ InterCardNumberY + ") NumberChunk:" + CardNumberDetectedChunkLocation )
 
@@ -623,8 +623,7 @@ class PokemonCard
         return db.insert(DataBaseHandler.TABLE_NAME, null, cv)
     }
 
-    fun CreateIntermediaryImage()
-    {
+    fun CreateIntermediaryImage() {
         Log.i(TAG, "CreateIntermediaryImage - Starting")
         val theImage = originalPictureBitmap
         imageChuncks = null
@@ -633,7 +632,6 @@ class PokemonCard
         val image_size = INTERMEDIARY_IMAGE_SIZE
 
         //For the number of rows and columns of the grid to be displayed
-
 
 
         //----- Getting the scaled bitmap of the source image
@@ -667,6 +665,36 @@ class PokemonCard
             return
         }
 
+    }
+
+    fun SplitImage(): ArrayList<Bitmap>?
+    {
+        Log.i(TAG, "SplitImage - Starting")
+        val theImage = originalPictureBitmap
+        imageChuncks = null
+        //if (tfilemodel == null) return null
+        val patch_size = SIZE_CHUNCK
+        val image_size = INTERMEDIARY_IMAGE_SIZE
+
+        //For the number of rows and columns of the grid to be displayed
+
+        //For height and width of the small image chunks
+        val chunkHeight: Int
+        val chunkWidth: Int
+
+        //To store all the small image chunks in bitmap format in this list
+        val chunkperaxis = ((image_size * 2) / patch_size) + 1
+        val chunkNumbers = chunkperaxis * chunkperaxis
+        val chunkedImages = ArrayList<Bitmap>(chunkNumbers)
+
+
+        val chunkstat : ChunckStatusKot = ChunckStatusKot()
+
+
+        //chunkstatusTable = arrayOfNulls(chunkNumbers)
+        chunkstatusTable = Array<ChunckStatusKot?>(chunkNumbers, { _ -> chunkstat })
+
+        CreateIntermediaryImage()
         //------- Devide in truncks
         //rows = cols = (int) Math.sqrt(chunkNumbers);
         chunkHeight = patch_size
