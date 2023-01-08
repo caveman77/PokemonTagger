@@ -273,6 +273,7 @@ public class TranslateFragment extends Fragment {
 
     private final class LongOperation extends AsyncTask<Void, Integer, String>
     {
+        Boolean justStarted = true;
 
         @Override
         protected String doInBackground(Void... params)
@@ -304,10 +305,11 @@ public class TranslateFragment extends Fragment {
 
             }
 
-
+            ArrayList<Integer> listOfChuncksToCheck = card.getChunkListToSearchLogoFamily();
             // family logo are usually below so better start with the last ones
-            for (int p=card.getNumberChuncks()-1; p>=0 && ((pastrouve == true) || (Store==true)) && (!isCancelled()); p--)
+            for (int indexChunk=0; indexChunk < listOfChuncksToCheck.size() && ((pastrouve == true) || (Store==true)) && (!isCancelled()); indexChunk++)
             {
+                int p = listOfChuncksToCheck.get(indexChunk);
                 card.DectectLogoFamily(p);
                 publishProgress(p);
 
@@ -369,8 +371,9 @@ public class TranslateFragment extends Fragment {
 
             }
 
-            if (p==card.getNumberChuncks()-1)       // as the text reco has been played already. Let's update the layout accordingly
+            if (justStarted)       // as the text reco has been played already. Let's update the layout accordingly
             {
+                justStarted = false;
                 PokemonFamily pokefamily = card.getFamily();
                 if (pokefamily != null)
                 {
@@ -424,7 +427,7 @@ public class TranslateFragment extends Fragment {
         {
             // sometimes even the first chunck is not analysed
             String CardN = editView.getText().toString();
-            if (StringUtils.isEmpty(CardN))
+            if (StringUtils.isEmpty(CardN) && justStarted)
             {
                 CardN = card.getCardNumberDetected();
                 if (!StringUtils.isEmpty(CardN))

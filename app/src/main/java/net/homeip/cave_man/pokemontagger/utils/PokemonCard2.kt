@@ -30,6 +30,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PokemonCard
@@ -327,6 +328,47 @@ class PokemonCard
         Log.i(TAG, "DectectCardNumber - Fully Completed :" + Date())
 
     }
+
+    fun getChunkListToSearchLogoFamily() : ArrayList<Int>
+    {
+        val output =  ArrayList<Int>()
+        var nb_chuncks = getNumberChuncks()  // total number of chuncks
+
+        if (CardNumberDetectedChunkLocation == null)
+        {
+            val decroi = IntArray(nb_chuncks){ i -> (nb_chuncks - i - 1) }
+            return decroi.toCollection(ArrayList())
+        }
+
+
+        // Need to provide the chuncks around the card number
+        val nb_chuncks_per_line: Int = Math.sqrt(nb_chuncks.toDouble()).toInt()
+        val MAX_RANGE_AROUND_CARD = 6
+        val square = MAX_RANGE_AROUND_CARD * MAX_RANGE_AROUND_CARD
+
+        //val y_number : Int = CardNumberDetectedChunkLocation!! / nb_chuncks_per_line
+        val x_number : Int = CardNumberDetectedChunkLocation!! % nb_chuncks_per_line
+
+
+        for (ligne in MAX_RANGE_AROUND_CARD/2 downTo -MAX_RANGE_AROUND_CARD/2 step 1)
+        {
+            for (colonne in MAX_RANGE_AROUND_CARD downTo -MAX_RANGE_AROUND_CARD step 1)
+            {
+                val currentchunk : Int = nb_chuncks_per_line * ligne + colonne + CardNumberDetectedChunkLocation!!
+
+                if ((currentchunk>=0) && (currentchunk<nb_chuncks) && (colonne + x_number!! >=0) && (colonne + x_number!! < nb_chuncks_per_line))
+                {
+                    val distance = ligne * ligne + colonne * colonne
+                    if (distance < square)
+                        output.add(currentchunk)
+
+                }
+            }
+        }
+
+        return output
+    }
+
 
     fun getCardNumberChunk() : Int?
     {
