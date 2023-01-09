@@ -306,6 +306,12 @@ public class TranslateFragment extends Fragment {
             }
 
             ArrayList<Integer> listOfChuncksToCheck = card.getChunkListToSearchLogoFamily();
+
+            if (listOfChuncksToCheck == null)
+            {
+                return "Executed";
+            }
+
             // family logo are usually below so better start with the last ones
             for (int indexChunk=0; indexChunk < listOfChuncksToCheck.size() && ((pastrouve == true) || (Store==true)) && (!isCancelled()); indexChunk++)
             {

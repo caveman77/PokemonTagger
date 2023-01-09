@@ -329,15 +329,18 @@ class PokemonCard
 
     }
 
-    fun getChunkListToSearchLogoFamily() : ArrayList<Int>
+    fun getChunkListToSearchLogoFamily() : ArrayList<Int>?
     {
         val output =  ArrayList<Int>()
         var nb_chuncks = getNumberChuncks()  // total number of chuncks
 
         if (CardNumberDetectedChunkLocation == null)
         {
-            val decroi = IntArray(nb_chuncks){ i -> (nb_chuncks - i - 1) }
-            return decroi.toCollection(ArrayList())
+            //val decroi = IntArray(nb_chuncks){ i -> (nb_chuncks - i - 1) }
+            //return decroi.toCollection(ArrayList())
+
+            // This is too long to wait for the vgg19 on the full picture
+            return null
         }
 
 
