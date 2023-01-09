@@ -212,7 +212,7 @@ class PokemonCard
         totalCardFamilyDetectedString = null
 
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        val image = InputImage.fromBitmap(rotatedBitmap!!, 0)
+        val image = InputImage.fromBitmap(rotateImage(originalPictureBitmap, null)!!, 0)
 
         val result = recognizer.process(image)
             .addOnSuccessListener { _ ->
@@ -300,11 +300,11 @@ class PokemonCard
                             val cardloc = element.boundingBox
                             val originalCenterCardNumberX = cardloc!!.left + (cardloc!!.right - cardloc!!.left) * ratio
                             val originalCenterCardNumberY = (cardloc!!.top + cardloc!!.bottom ) / 2
-                            //val originalCenterCardNumberRatioX = originalCenterCardNumberX.toFloat() / originalPictureBitmap.width
-                            //val originalCenterCardNumberRatioY = originalCenterCardNumberY.toFloat() / originalPictureBitmap.height
+                            val originalCenterCardNumberRatioX : Float = originalCenterCardNumberX.toFloat() / minOf(originalPictureBitmap.height, originalPictureBitmap.width)
+                            val originalCenterCardNumberRatioY : Float = originalCenterCardNumberY.toFloat() / maxOf(originalPictureBitmap.height, originalPictureBitmap.width)
 
-                            val InterCardNumberX: Int = (originalCenterCardNumberX).toInt()
-                            val InterCardNumberY: Int = (originalCenterCardNumberY).toInt()
+                            val InterCardNumberX: Int = ( originalCenterCardNumberRatioX * INTERMEDIARY_IMAGE_SIZE).toInt()
+                            val InterCardNumberY: Int = ( originalCenterCardNumberRatioY * INTERMEDIARY_IMAGE_SIZE).toInt()
 
                             CardNumberDetectedChunkLocation = getPositionfromXY(InterCardNumberX, InterCardNumberY, getNumberChuncks()) - 1
 
@@ -679,23 +679,21 @@ class PokemonCard
         return db.insert(DataBaseHandler.TABLE_NAME, null, cv)
     }
 
-    fun CreateIntermediaryImage() {
-        Log.i(TAG, "CreateIntermediaryImage - Starting")
-        val theImage = originalPictureBitmap
-        imageChuncks = null
-        //if (tfilemodel == null) return null
-
-        val image_size = INTERMEDIARY_IMAGE_SIZE
-
-        //For the number of rows and columns of the grid to be displayed
-
+    private fun rotateImage(InputImage : Bitmap, newsize : Int?)  : Bitmap?
+    {
+        Log.i(TAG, "rotateImage - Starting")
 
         //----- Getting the scaled bitmap of the source image
-        val scaledBitmap = Bitmap.createScaledBitmap(theImage, image_size, image_size, true)
+        var scaledBitmap = InputImage
+
+        if (newsize != null)
+            scaledBitmap = Bitmap.createScaledBitmap(InputImage, newsize, newsize, true)
+
         val softwareBitmap = scaledBitmap.copy(Bitmap.Config.ARGB_8888, false)
-        Log.i(TAG, "SplitImage - Rotating based on Exif tag")
+        Log.i(TAG, "rotateImage - Rotating based on Exif tag")
         // -- Rotate picture based on exif
 
+        var outputBitmap : Bitmap? = null
         try {
             val exif = ExifInterface(OriginalPictureFile!!.absolutePath.toString())
             Exif_rotation = exif.getAttributeInt(
@@ -707,7 +705,7 @@ class PokemonCard
             if (Exif_rotation.toFloat() != 0f) {
                 matrix.preRotate(rotationInDegrees.toFloat())
             }
-            rotatedBitmap = Bitmap.createBitmap(
+            outputBitmap = Bitmap.createBitmap(
                 softwareBitmap,
                 0,
                 0,
@@ -717,10 +715,10 @@ class PokemonCard
                 true
             )
         } catch (ex: IOException) {
-            Log.e(TAG, "SplitImage - Failed to get Exif data", ex)
-            return
+            Log.e(TAG, "rotateImage - Failed to get Exif data", ex)
         }
 
+        return outputBitmap
     }
 
     fun SplitImage(): ArrayList<Bitmap>?
@@ -750,7 +748,8 @@ class PokemonCard
         //chunkstatusTable = arrayOfNulls(chunkNumbers)
         chunkstatusTable = Array<ChunckStatusKot?>(chunkNumbers, { _ -> chunkstat })
 
-        CreateIntermediaryImage()
+        rotatedBitmap  = rotateImage(theImage, INTERMEDIARY_IMAGE_SIZE)
+
         //------- Devide in truncks
         //rows = cols = (int) Math.sqrt(chunkNumbers);
         chunkHeight = patch_size
