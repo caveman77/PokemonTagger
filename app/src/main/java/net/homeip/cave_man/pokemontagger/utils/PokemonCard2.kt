@@ -353,16 +353,18 @@ class PokemonCard
         // We take the assumption that the user has more or less centered the picture verticaly
         var x_start = MAX_RANGE_AROUND_CARD
         var x_stop = 0
+        var pas = -1
         if (x_number < nb_chuncks_per_line/2)
         {
-            x_start = 0
-            x_stop = -MAX_RANGE_AROUND_CARD
+            x_start = -MAX_RANGE_AROUND_CARD
+            x_stop = 0
+            pas = 1
         }
 
-
-        for (ligne in 1 downTo -1 step 1)
+        var colonne = x_start
+        while (( (pas <0) && ( colonne >= x_stop) ) || ((pas >0) && ( colonne <= x_stop) ))
         {
-            for (colonne in x_start downTo x_stop step 1)
+            for (ligne in 1 downTo -1 step 1)
             {
                 val currentchunk : Int = nb_chuncks_per_line * ligne + colonne + CardNumberDetectedChunkLocation!!
 
@@ -374,6 +376,8 @@ class PokemonCard
 
                 }
             }
+
+            colonne += pas
         }
 
         return output
