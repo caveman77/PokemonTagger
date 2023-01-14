@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class PokemonFamily
 {
@@ -79,8 +81,20 @@ public class PokemonFamily
         }
 
 
-        if (inputstring.equalsIgnoreCase(this.SecondaryNumberOfCards) )
-            return true;
+        try
+        {
+            Pattern  p = Pattern.compile(this.SecondaryNumberOfCards);
+            Matcher m = p.matcher(inputstring);
+            boolean b = m.matches();
+
+            if (b == true)
+                return true;
+        }
+        catch (Exception e)
+        {
+
+        }
+
 
         return false;
     }

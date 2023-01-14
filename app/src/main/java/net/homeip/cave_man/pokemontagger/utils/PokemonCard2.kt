@@ -241,7 +241,7 @@ class PokemonCard
                         val elementText = element.text
 
 
-                        val regex = Regex("[A-Za-z]{0,2}[0-9oO]{1,3}/[A-Za-z]{0,2}[0-9oO]{1,3}|[Xx][Yy][0-9oO]{1,3}|[Hh][Gg][Ss][Ss][0-9oO]{1,3}|[Ss][Mm][0-9oO]{1,3}|[Bb][Ww][0-9oO]{1,3}|[Ss][Ww][Ss][Hh][0-9oO]{1,3}")
+                        val regex = Regex("[A-Za-z]{0,3}[0-9oO]{1,3}/[A-Za-z]{0,2}[0-9oO]{1,3}|[Xx][Yy][0-9oO]{1,3}|[Hh][Gg][Ss][Ss][0-9oO]{1,3}|[Ss][Mm][0-9oO]{1,3}|[Bb][Ww][0-9oO]{1,3}|[Ss][Ww][Ss][Hh][0-9oO]{1,3}")
                         val finder = regex.find(elementText)
 
                         if (finder != null)
